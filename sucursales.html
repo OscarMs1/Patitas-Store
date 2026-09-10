@@ -6,7 +6,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Detalle del producto | Patitas Store</title>
+  <title>Sucursales | Patitas Store</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,7 +67,7 @@
           <ul class="navbar-nav me-auto d-lg-none">
             <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
             <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-            <li class="nav-item"><a class="nav-link" href="sucursales.html">Sucursales</a></li>
+            <li class="nav-item"><a class="nav-link active" href="sucursales.html">Sucursales</a></li>
             <li class="nav-item"><a class="nav-link" href="ayuda.html">Centro de Ayuda</a></li>
             <li class="nav-item"><a class="nav-link" href="blogs.html">Blogs</a></li>
             <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
@@ -110,13 +110,168 @@
 
 <main>
 
+  <!-- ============================================================
+       TITULO DE LA PAGINA
+       Cada pagina tiene UN solo <h1>. Es el titulo principal.
+       ============================================================ -->
   <section class="container">
-    <div class="caja animado" style="margin-top:35px;">
 
-      <div id="detalleProducto"></div>
+    <h1 class="titulo-seccion">Nuestras sucursales</h1>
+    <p class="bajada-seccion">Seis tiendas para comprar, retirar o pedir ayuda en persona</p>
+
+    <!-- Aviso de retiro en tienda -->
+    <div class="caja animado mb-4">
+      <h2 class="h5">&#128230; Retiro en tienda sin costo</h2>
+      <p class="mb-0">
+        Compra en la web y elige <strong>Retiro en tienda</strong>. Te avisamos
+        por correo cuando tu pedido este listo, normalmente dentro de las
+        siguientes 24 horas habiles. Lleva tu numero de pedido y tu carnet.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         LAS SUCURSALES
+         Cada sucursal es un <article>: es un bloque de contenido que
+         se entiende solo, aunque lo saques de la pagina.
+         La grilla de Bootstrap las reparte en 3 / 2 / 1 columnas.
+         ============================================================ -->
+    <div class="row g-3">
+
+      <div class="col-lg-4 col-md-6">
+        <article class="caja h-100">
+          <h2 class="h5">Providencia <span class="badge text-bg-success">Casa matriz</span></h2>
+          <p class="ayuda mb-2">Av. Providencia 1234, Providencia, Santiago</p>
+          <ul class="list-unstyled mb-0">
+            <li>&#128337; Lunes a viernes 9:00 - 20:00</li>
+            <li>&#128337; Sabado 10:00 - 18:00</li>
+            <li>&#128337; Domingo cerrado</li>
+            <li>&#128222; +56 2 2345 6789</li>
+            <li class="mt-2">&#129465; Peluqueria canina &middot; &#128138; Farmacia</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <article class="caja h-100">
+          <h2 class="h5">Maipu</h2>
+          <p class="ayuda mb-2">Av. Pajaritos 2890, Maipu, Santiago</p>
+          <ul class="list-unstyled mb-0">
+            <li>&#128337; Lunes a viernes 10:00 - 20:00</li>
+            <li>&#128337; Sabado y domingo 10:00 - 19:00</li>
+            <li>&#128222; +56 2 2345 6790</li>
+            <li class="mt-2">&#128666; Estacionamiento &middot; &#129465; Peluqueria canina</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <article class="caja h-100">
+          <h2 class="h5">La Reina</h2>
+          <p class="ayuda mb-2">Av. Larrain 5920, La Reina, Santiago</p>
+          <ul class="list-unstyled mb-0">
+            <li>&#128337; Lunes a viernes 9:30 - 19:30</li>
+            <li>&#128337; Sabado 10:00 - 17:00</li>
+            <li>&#128222; +56 2 2345 6791</li>
+            <li class="mt-2">&#128138; Farmacia veterinaria</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <article class="caja h-100">
+          <h2 class="h5">Vina del Mar</h2>
+          <p class="ayuda mb-2">Av. Libertad 450, Vina del Mar, Valparaiso</p>
+          <ul class="list-unstyled mb-0">
+            <li>&#128337; Lunes a sabado 10:00 - 20:00</li>
+            <li>&#128337; Domingo 11:00 - 17:00</li>
+            <li>&#128222; +56 32 234 5678</li>
+            <li class="mt-2">&#128666; Estacionamiento</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <article class="caja h-100">
+          <h2 class="h5">Concepcion</h2>
+          <p class="ayuda mb-2">Barros Arana 780, Concepcion, Biobio</p>
+          <ul class="list-unstyled mb-0">
+            <li>&#128337; Lunes a viernes 10:00 - 19:00</li>
+            <li>&#128337; Sabado 10:00 - 16:00</li>
+            <li>&#128222; +56 41 234 5678</li>
+            <li class="mt-2">&#129465; Peluqueria canina</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <article class="caja h-100">
+          <h2 class="h5">Temuco <span class="badge text-bg-warning">Nueva</span></h2>
+          <p class="ayuda mb-2">Av. Alemania 0655, Temuco, La Araucania</p>
+          <ul class="list-unstyled mb-0">
+            <li>&#128337; Lunes a viernes 10:00 - 19:00</li>
+            <li>&#128337; Sabado 10:00 - 15:00</li>
+            <li>&#128222; +56 45 234 5678</li>
+            <li class="mt-2">&#128666; Estacionamiento &middot; &#128138; Farmacia</li>
+          </ul>
+        </article>
+      </div>
 
     </div>
+
+    <!-- ============================================================
+         COBERTURA DE DESPACHO
+         Una tabla simple. <thead> y <tbody> no son decoracion:
+         le dicen al navegador cual fila es el encabezado.
+         ============================================================ -->
+    <h2 class="titulo-seccion mt-5">Cobertura de despacho</h2>
+    <p class="bajada-seccion">Plazos estimados en dias habiles</p>
+
+    <div class="table-responsive">
+      <table class="tabla-simple">
+        <thead>
+          <tr>
+            <th>Zona</th>
+            <th>Plazo</th>
+            <th>Costo</th>
+            <th>Despacho gratis desde</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Region Metropolitana</td>
+            <td>24 a 48 horas</td>
+            <td>$2.990</td>
+            <td>$30.000</td>
+          </tr>
+          <tr>
+            <td>Valparaiso y O'Higgins</td>
+            <td>2 a 3 dias</td>
+            <td>$3.990</td>
+            <td>$30.000</td>
+          </tr>
+          <tr>
+            <td>Resto del pais</td>
+            <td>3 a 5 dias</td>
+            <td>$4.990</td>
+            <td>$45.000</td>
+          </tr>
+          <tr>
+            <td>Zonas extremas</td>
+            <td>5 a 8 dias</td>
+            <td>$7.990</td>
+            <td>No aplica</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center my-5">
+      <a class="btn btn-principal" href="productos.html">Ver el catalogo</a>
+      <a class="btn btn-secundario" href="ayuda.html">Ir al centro de ayuda</a>
+    </div>
+
   </section>
+
 </main>
 
   <footer class="tienda-footer">

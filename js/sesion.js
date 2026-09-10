@@ -110,7 +110,11 @@ function actualizarNavegacionSesion() {
   }
 
   let sesion = obtenerSesion();
-  let enlace = acciones.querySelector(".btn-link-suave");
+
+  // Buscamos el enlace por su id. Antes se buscaba por la clase
+  // btn-link-suave, pero ahora Sucursales y Ayuda usan esa misma
+  // clase, asi que agarraba el equivocado.
+  let enlace = document.getElementById("enlaceSesion");
 
   if (sesion === null) {
     if (enlace !== null) {

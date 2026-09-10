@@ -25,6 +25,7 @@
         <div class="d-flex gap-3">
           <a href="sucursales.html" class="text-decoration-none text-dark">📍 Sucursales</a>
           <a href="ayuda.html" class="text-decoration-none text-dark">❓ Centro de Ayuda</a>
+          <a href="nosotros.html" class="text-decoration-none text-dark">🐾 Nosotros</a>
           <a href="contacto.html" class="text-decoration-none text-dark">📞 Contacto</a>
         </div>
       </div>
@@ -40,7 +41,7 @@
 
         <form class="d-none d-lg-flex mx-4 flex-grow-1" role="search" action="productos.html">
           <div class="input-group">
-            <input class="form-control bg-light border-end-0" type="search" placeholder="¿Qué necesita tu mascota hoy? (Alimento, juguetes...)" aria-label="Buscar">
+            <input class="form-control bg-light border-end-0" type="search" name="q" list="sugerencias" placeholder="¿Qué necesita tu mascota hoy? (Alimento, juguetes...)" aria-label="Buscar">
             <button class="btn btn-outline-secondary bg-light border-start-0" type="submit">🔍</button>
           </div>
         </form>
@@ -55,7 +56,7 @@
         <div class="collapse navbar-collapse" id="menuPrincipal">
           <div class="d-lg-none my-3">
             <form role="search" action="productos.html">
-              <input class="form-control" type="search" placeholder="Buscar productos..." aria-label="Buscar">
+              <input class="form-control" type="search" name="q" list="sugerencias" placeholder="Buscar productos..." aria-label="Buscar">
             </form>
           </div>
 
@@ -72,7 +73,7 @@
           <div class="tienda-acciones ms-auto">
             <a class="btn btn-link-suave d-none d-lg-inline-block" href="sucursales.html">Sucursales</a>
             <a class="btn btn-link-suave d-none d-lg-inline-block" href="ayuda.html">Ayuda</a>
-            <a class="btn btn-link-suave" href="login.html">Ingresar</a>
+            <a class="btn btn-link-suave" id="enlaceSesion" href="login.html">Ingresar</a>
             <a class="btn btn-carrito" href="carrito.html">
               Carrito
               <span class="badge-carrito" id="contadorCarrito">0</span>
@@ -98,6 +99,9 @@
         </div>
       </div>
     </div>
+    <!-- Recomendaciones del buscador. catalogo.js las escribe aca dentro. -->
+    <datalist id="sugerencias"></datalist>
+
   </header>
 
   <main>
@@ -158,6 +162,44 @@
       </div>
     </section>
 
+
+    <!-- ============================================================
+         VIDEO DE GATITOS
+         La etiqueta <video> es de HTML5: no necesita ningun plugin
+         ni JavaScript.
+
+         autoplay   -> parte solo al cargar la pagina
+         muted      -> SIN ESTO el navegador NO deja que parta solo
+         loop       -> cuando termina, vuelve a empezar
+         playsinline-> en el celular se ve dentro de la pagina y no
+                       se abre en pantalla completa
+         poster     -> imagen que se muestra mientras el video carga
+
+         El texto de adentro solo se ve si el navegador es tan viejo
+         que no entiende la etiqueta <video>.
+         ============================================================ -->
+    <section class="container my-5">
+      <h2 class="titulo-seccion">Un ratito de gatitos</h2>
+      <p class="bajada-seccion">Porque elegir el alimento tambien puede ser entretenido</p>
+
+      <div class="caja-video animado">
+        <video poster="video/gatitos-poster.jpg"
+               autoplay muted loop playsinline>
+          <!-- El navegador prueba de arriba a abajo y usa el primero
+               que sepa reproducir. -->
+          <source src="video/gatitos.webm" type="video/webm">
+          <source src="video/gatitos.mp4" type="video/mp4">
+          Tu navegador no puede mostrar videos. Descarga el archivo
+          <a href="video/gatitos.mp4">video/gatitos.mp4</a> para verlo.
+        </video>
+
+        <div class="texto-video">
+          <h3 class="h5">Gatitos jugando</h3>
+          <p>Animacion original hecha por el equipo. No tiene sonido y se repite sola.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- Tarjetas de Categorías corregidas -->
     <section class="container mb-5">
       <h2 class="titulo-seccion text-center">Explora por Categoría</h2>
@@ -188,6 +230,23 @@
             <span class="fw-bold text-dark mt-2">Accesorios</span>
           </a>
         </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         OFERTAS ESPECIALES
+         El <div> va vacio: catalogo.js escribe adentro solo los
+         productos que tienen precioAnterior.
+         ============================================================ -->
+    <section class="container my-5">
+      <h2 class="titulo-seccion">Ofertas especiales</h2>
+      <p class="bajada-seccion">Precios rebajados por tiempo limitado</p>
+
+      <div class="row" id="productosOferta"></div>
+
+      <div class="text-center">
+        <a class="btn btn-principal" href="productos.html?ofertas=true">Ver todas las ofertas</a>
       </div>
     </section>
 

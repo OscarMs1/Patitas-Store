@@ -193,6 +193,7 @@ main {
 }
 
 .card-producto {
+  position: relative;           /* referencia para la etiqueta de oferta */
   background-color: var(--blanco);
   border: 1px solid var(--borde);
   border-radius: var(--radio);
@@ -589,4 +590,108 @@ select:focus-visible, textarea:focus-visible {
   .caja {
     padding: 20px;
   }
+}
+
+
+/* ------------------------------------------------------------
+   15. OFERTAS
+   La etiqueta roja de la esquina y el precio viejo tachado.
+   ------------------------------------------------------------ */
+
+/* position: absolute la saca del flujo normal y la deja pegada
+   a la esquina de la tarjeta (que tiene position: relative). */
+.etiqueta-oferta {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 2;
+  background-color: var(--rojo);
+  color: var(--blanco);
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+/* El precio de antes: mas chico, gris y con una linea encima. */
+.precio-antes {
+  color: var(--gris);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: line-through;
+  margin-right: 8px;
+}
+
+/* ------------------------------------------------------------
+   16. VIDEO DEL INICIO
+   ------------------------------------------------------------ */
+.caja-video {
+  position: relative;
+  border-radius: var(--radio);
+  overflow: hidden;             /* recorta el video a las esquinas redondas */
+  box-shadow: var(--sombra);
+  background-color: var(--verde-oscuro);
+}
+
+.caja-video video {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* El texto que va encima del video.
+   El degradado oscuro de abajo es para que las letras blancas
+   se lean aunque el video sea claro. */
+.texto-video {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 40px 24px 20px 24px;
+  color: var(--blanco);
+  background: linear-gradient(to top, rgba(14, 79, 69, 0.85), rgba(14, 79, 69, 0));
+}
+
+.texto-video h3 {
+  color: var(--blanco);
+  margin-bottom: 4px;
+}
+
+.texto-video p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 575px) {
+  .texto-video {
+    padding: 28px 16px 14px 16px;
+  }
+  .texto-video h3 {
+    font-size: 1.1rem;
+  }
+  .texto-video p {
+    font-size: 0.85rem;
+  }
+}
+
+/* ------------------------------------------------------------
+   17. ACORDEON DEL CENTRO DE AYUDA
+   Bootstrap lo pinta azul por defecto. Lo pasamos a los colores
+   de la tienda para que no desentone.
+   ------------------------------------------------------------ */
+.accordion-button:not(.collapsed) {
+  background-color: var(--crema);
+  color: var(--verde-oscuro);
+  box-shadow: none;
+}
+
+.accordion-button:focus {
+  border-color: var(--borde);
+  box-shadow: 0 0 0 3px rgba(23, 107, 91, 0.18);
+}
+
+.accordion-item {
+  border-color: var(--borde);
 }
