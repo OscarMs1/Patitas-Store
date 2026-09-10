@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
 
 :root {
   --verde:        #176B5B;
@@ -12,12 +12,15 @@
   --rojo:         #C0392B;   
   --verde-ok:     #1E7A4D;   
 
+  --fuente-titulos: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+  --fuente-texto:   'Nunito', 'Segoe UI', Arial, sans-serif;
+
   --radio: 16px;
   --sombra: 0 8px 24px rgba(28, 55, 49, 0.08);
 }
 
 body {
-  font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+  font-family: var(--fuente-texto);
   background-color: var(--crema);
   color: var(--texto);
   font-size: 16px;
@@ -25,7 +28,8 @@ body {
 }
 
 h1, h2, h3 {
-  font-weight: 800;
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
   color: var(--verde);
 }
 
@@ -61,6 +65,7 @@ main {
 }
 
 .tienda-navbar .navbar-brand {
+  font-family: var(--fuente-titulos);
   display: flex;
   align-items: center;
   gap: 10px;
