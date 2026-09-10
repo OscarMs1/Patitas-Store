@@ -6,6 +6,7 @@ let productosBase = [
     nombre: "Alimento Perro Adulto Raza Grande 15 kg",
     categoria: "Alimento",
     mascota: "Perro",
+    precioAnterior: 52990,   // precio normal; si existe, el producto esta en oferta
     precio: 42990,
     stock: 24,
     stockCritico: 5,
@@ -45,6 +46,7 @@ let productosBase = [
     nombre: "Rascador Torre de Sisal 60 cm",
     categoria: "Juguetes",
     mascota: "Gato",
+    precioAnterior: 39990,   // precio normal; si existe, el producto esta en oferta
     precio: 29990,
     stock: 12,
     stockCritico: 4,
@@ -71,6 +73,7 @@ let productosBase = [
     nombre: "Cama Acolchada Talla L",
     categoria: "Accesorios",
     mascota: "Perro",
+    precioAnterior: 32990,   // precio normal; si existe, el producto esta en oferta
     precio: 24990,
     stock: 2,
     stockCritico: 4,
@@ -81,11 +84,19 @@ let productosBase = [
 
 ];
 
+// Numero de version del catalogo.
+// Cada vez que cambiemos los productos de arriba, subimos este numero.
+// Asi el navegador de quien ya visito el sitio bota la copia vieja que
+// tenia guardada y vuelve a leer la lista nueva.
+let versionCatalogo = "2";
+
 function cargarProductos() {
   let guardados = localStorage.getItem("productosPatitas");
+  let versionGuardada = localStorage.getItem("versionCatalogo");
 
-  if (guardados === null) {
+  if (guardados === null || versionGuardada !== versionCatalogo) {
     localStorage.setItem("productosPatitas", JSON.stringify(productosBase));
+    localStorage.setItem("versionCatalogo", versionCatalogo);
     return productosBase.slice();
   }
 

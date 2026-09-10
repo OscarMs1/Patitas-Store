@@ -20,10 +20,27 @@ Patitas Store es una tienda online de artículos para mascotas desarrollada para
 - Registro, inicio de sesión y contacto con validaciones en JavaScript
 - Regiones y comunas dependientes
 - Blog y sección Nosotros
+- Buscador con recomendaciones (sugiere productos, categorías y tipo de mascota)
+- Ofertas especiales con precio anterior tachado y porcentaje de descuento
+- Página de sucursales con las seis tiendas y la cobertura de despacho
+- Centro de ayuda con doce preguntas frecuentes en acordeón
+- Video de gatitos en el inicio, animación original del equipo
 - Panel protegido con permisos de Administrador, Vendedor y Cliente
 - Mantenedores funcionales de productos y usuarios
 - Listado y detalle de órdenes para Administrador y Vendedor
 - Fotografías realistas de productos y diseño adaptable a celular
+
+
+## Sobre el video del inicio
+
+El archivo `video/gatitos.mp4` (y su versión `.webm`) es una animación hecha
+por el equipo cuadro a cuadro, con los mismos colores del sitio. No se usó
+ninguna imagen ni video de terceros, así que no hay problema de derechos de
+autor. Se muestra sin sonido y en bucle, y pesa menos de 400 KB.
+
+Se entregan dos formatos porque no todos los navegadores leen los mismos
+códecs: la etiqueta `<video>` prueba primero el `.webm` y, si no puede, usa
+el `.mp4`.
 
 ## Cuentas de demostración
 

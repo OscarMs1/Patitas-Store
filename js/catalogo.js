@@ -13,20 +13,56 @@ function buscarProducto(codigo) {
   return null;
 }
 
+// ------------------------------------------------------------
+// Dice si un producto esta en oferta.
+// La regla es simple: esta en oferta si tiene precioAnterior y
+// ese precio anterior es mayor que el que se cobra hoy.
+// ------------------------------------------------------------
+function estaEnOferta(p) {
+  if (p.precioAnterior === undefined) {
+    return false;
+  }
+  if (p.precioAnterior > p.precio) {
+    return true;
+  }
+  return false;
+}
+
+// ------------------------------------------------------------
+// Calcula cuanto por ciento se descuenta, redondeado.
+// Ejemplo: de 52990 a 42990 son 10000 de rebaja, o sea 19%.
+// ------------------------------------------------------------
+function porcentajeDescuento(p) {
+  let rebaja = p.precioAnterior - p.precio;
+  let porcentaje = (rebaja / p.precioAnterior) * 100;
+  return Math.round(porcentaje);
+}
+
 function tarjetaProducto(p) {
   let textoStock = p.stock > 0 ? "Stock: " + p.stock : "Agotado";
   let botonCarrito = p.stock > 0
     ? `<button class="btn btn-principal" onclick="agregarAlCarrito('${p.codigo}')">Añadir</button>`
     : `<button class="btn btn-principal" disabled>Agotado</button>`;
 
+  // Si el producto esta en oferta armamos dos trozos de HTML extra:
+  // la etiqueta roja de la esquina y el precio viejo tachado.
+  let etiqueta = "";
+  let precioViejo = "";
+
+  if (estaEnOferta(p) === true) {
+    etiqueta = `<span class="etiqueta-oferta">-${porcentajeDescuento(p)}%</span>`;
+    precioViejo = `<span class="precio-antes">${precioBonito(p.precioAnterior)}</span>`;
+  }
+
   return `
     <div class="col-sm-6 col-lg-4 mb-4">
       <div class="card-producto">
+        ${etiqueta}
         <img src="${p.imagen}" alt="${p.nombre}" loading="lazy">
         <span class="categoria">${p.categoria} &middot; ${p.mascota}</span>
         <h3>${p.nombre}</h3>
         <span class="stock-producto">${textoStock}</span>
-        <p class="precio">${precioBonito(p.precio)}</p>
+        <p class="precio">${precioViejo}${precioBonito(p.precio)}</p>
         <div class="acciones">
           <button class="btn btn-secundario" onclick="verDetalle('${p.codigo}')">Ver</button>
           ${botonCarrito}
@@ -35,7 +71,7 @@ function tarjetaProducto(p) {
     </div>`;
 }
 
-function pintarProductos(idContenedor, lista) {
+function pintarProductos(idContenedor, lista, mensajeVacio) {
   let contenedor = document.getElementById(idContenedor);
 
   if (contenedor === null) {
@@ -49,7 +85,10 @@ function pintarProductos(idContenedor, lista) {
   }
 
   if (html === "") {
-    html = "<p class='text-center'>No hay productos en esta categoria.</p>";
+    if (mensajeVacio === undefined) {
+      mensajeVacio = "No hay productos en esta categoria.";
+    }
+    html = "<div class='estado-vacio'>" + mensajeVacio + "</div>";
   }
 
   contenedor.innerHTML = html;
@@ -61,6 +100,10 @@ function verDetalle(codigo) {
 }
 
 function filtrarCategoria(categoria) {
+
+  // Si veniamos de una busqueda, borramos el mensaje de arriba:
+  // ya no estamos mirando resultados de busqueda.
+  mostrarResumen("");
 
   let filtrados = [];
 
@@ -140,15 +183,169 @@ function pintarDetalle() {
     </div>`;
 }
 
-pintarProductos("productosDestacados", [productos[0], productos[2], productos[3]]);
-pintarFiltros();
-pintarProductos("productosDestacados", [productos[0], productos[2], productos[3]]);
-pintarFiltros();
+// ============================================================
+//  BUSCADOR
+// ============================================================
 
+// ------------------------------------------------------------
+// Deja un texto listo para comparar: todo en minusculas y sin
+// tildes. Asi "Alimento" encuentra a "alimento" y "raton" a
+// "raton" aunque uno de los dos venga con tilde.
+// ------------------------------------------------------------
+function normalizar(texto) {
+  let limpio = texto.toLowerCase();
+  limpio = limpio.replace(/á/g, "a");
+  limpio = limpio.replace(/é/g, "e");
+  limpio = limpio.replace(/í/g, "i");
+  limpio = limpio.replace(/ó/g, "o");
+  limpio = limpio.replace(/ú/g, "u");
+  return limpio;
+}
+
+// ------------------------------------------------------------
+// Devuelve los productos que calzan con lo que se escribio.
+// Busca en el nombre, en la categoria y en el tipo de mascota,
+// asi que "gato" y "juguetes" tambien funcionan.
+// ------------------------------------------------------------
+function buscarPorTexto(texto) {
+  let buscado = normalizar(texto);
+  let encontrados = [];
+
+  for (let i = 0; i < productos.length; i++) {
+    let p = productos[i];
+    let dondeBuscar = normalizar(p.nombre + " " + p.categoria + " " + p.mascota);
+
+    // indexOf devuelve -1 cuando NO encuentra el texto
+    if (dondeBuscar.indexOf(buscado) !== -1) {
+      encontrados.push(p);
+    }
+  }
+
+  return encontrados;
+}
+
+// ------------------------------------------------------------
+// Llena las RECOMENDACIONES del buscador.
+// El <datalist> del HTML es la listita que aparece sola debajo
+// del campo mientras uno escribe. Aca le metemos el nombre de
+// cada producto y ademas las categorias.
+// ------------------------------------------------------------
+function pintarSugerencias() {
+  let caja = document.getElementById("sugerencias");
+
+  if (caja === null) {
+    return;
+  }
+
+  let html = "";
+
+  for (let i = 0; i < productos.length; i++) {
+    html = html + "<option value=\"" + productos[i].nombre + "\">";
+  }
+
+  for (let i = 0; i < categorias.length; i++) {
+    if (categorias[i] !== "Todos") {
+      html = html + "<option value=\"" + categorias[i] + "\">";
+    }
+  }
+
+  html = html + "<option value=\"Perro\">";
+  html = html + "<option value=\"Gato\">";
+
+  caja.innerHTML = html;
+}
+
+// ------------------------------------------------------------
+// Escribe arriba del listado que fue lo que se busco.
+// ------------------------------------------------------------
+function mostrarResumen(texto) {
+  let caja = document.getElementById("resumenBusqueda");
+
+  if (caja === null) {
+    return;
+  }
+
+  caja.innerHTML = texto;
+}
+
+
+// ============================================================
+//  OFERTAS
+// ============================================================
+
+// ------------------------------------------------------------
+// Junta todos los productos que tienen precio rebajado.
+// ------------------------------------------------------------
+function productosEnOferta() {
+  let enOferta = [];
+
+  for (let i = 0; i < productos.length; i++) {
+    if (estaEnOferta(productos[i]) === true) {
+      enOferta.push(productos[i]);
+    }
+  }
+
+  return enOferta;
+}
+
+// ------------------------------------------------------------
+// Los tres productos que se muestran en el inicio.
+// Primero los que estan en oferta; si faltan, se completan con
+// los primeros del catalogo.
+// ------------------------------------------------------------
+function productosDestacados() {
+  let elegidos = productosEnOferta();
+
+  for (let i = 0; i < productos.length; i++) {
+    if (elegidos.length >= 3) {
+      break;
+    }
+    if (elegidos.indexOf(productos[i]) === -1) {
+      elegidos.push(productos[i]);
+    }
+  }
+
+  return elegidos.slice(0, 3);
+}
+
+
+// ============================================================
+//  ARRANQUE
+//  Esto corre una vez, cuando termina de cargar la pagina.
+//  Cada funcion revisa sola si el elemento existe, asi que da
+//  igual en que pagina estemos.
+// ============================================================
+
+pintarProductos("productosDestacados", productosDestacados());
+pintarProductos("productosOferta", productosEnOferta(), "Por ahora no hay ofertas activas.");
+pintarFiltros();
+pintarSugerencias();
+
+// URLSearchParams lee lo que viene despues del ? en la direccion.
+// Por ejemplo en productos.html?categoria=juguetes el valor de
+// "categoria" es "juguetes".
 let parametros = new URLSearchParams(window.location.search);
+let textoBuscado = parametros.get("q");
+let verOfertas = parametros.get("ofertas");
 let categoriaURL = parametros.get("categoria");
 
-if (categoriaURL === "alimentos") {
+if (textoBuscado !== null && textoBuscado !== "") {
+
+  // Llegamos desde el buscador
+  let resultados = buscarPorTexto(textoBuscado);
+  mostrarResumen("Resultados para <strong>" + textoBuscado + "</strong>: " +
+                 resultados.length + " producto(s).");
+  pintarProductos("listaProductos", resultados,
+                  "No encontramos nada con ese nombre. Prueba con Alimento, Juguetes, Accesorios, Perro o Gato.");
+
+} else if (verOfertas === "true") {
+
+  // Llegamos desde el boton de Ofertas
+  mostrarResumen("Mostrando solo los productos <strong>en oferta</strong>.");
+  pintarProductos("listaProductos", productosEnOferta(),
+                  "Por ahora no hay ofertas activas.");
+
+} else if (categoriaURL === "alimentos") {
   filtrarCategoria("Alimento");
 } else if (categoriaURL === "juguetes") {
   filtrarCategoria("Juguetes");
