@@ -142,5 +142,20 @@ function pintarDetalle() {
 
 pintarProductos("productosDestacados", [productos[0], productos[2], productos[3]]);
 pintarFiltros();
-pintarProductos("listaProductos", productos);
+pintarProductos("productosDestacados", [productos[0], productos[2], productos[3]]);
+pintarFiltros();
+
+let parametros = new URLSearchParams(window.location.search);
+let categoriaURL = parametros.get("categoria");
+
+if (categoriaURL === "alimentos") {
+  filtrarCategoria("Alimento");
+} else if (categoriaURL === "juguetes") {
+  filtrarCategoria("Juguetes");
+} else if (categoriaURL === "accesorios") {
+  filtrarCategoria("Accesorios");
+} else {
+  filtrarCategoria("Todos");
+}
+
 pintarDetalle();
