@@ -1,11 +1,10 @@
-
-
 function obtenerCarrito() {
-  let guardado = localStorage.getItem("carrito");
-  if (guardado === null) {
+  try {
+    let carrito = JSON.parse(localStorage.getItem("carrito"));
+    return Array.isArray(carrito) ? carrito : [];
+  } catch (error) {
     return [];
   }
-  return JSON.parse(guardado);
 }
 
 function guardarCarrito(carrito) {
@@ -14,11 +13,21 @@ function guardarCarrito(carrito) {
 }
 
 function agregarAlCarrito(codigo) {
+  let producto = buscarProducto(codigo);
+  if (producto === null || producto.stock <= 0) {
+    alert("Este producto no tiene stock disponible.");
+    return;
+  }
+
   let carrito = obtenerCarrito();
   let encontrado = false;
 
   for (let i = 0; i < carrito.length; i++) {
     if (carrito[i].codigo === codigo) {
+      if (carrito[i].cantidad >= producto.stock) {
+        alert("No puedes añadir más unidades que el stock disponible.");
+        return;
+      }
       carrito[i].cantidad = carrito[i].cantidad + 1;
       encontrado = true;
     }
@@ -29,18 +38,24 @@ function agregarAlCarrito(codigo) {
   }
 
   guardarCarrito(carrito);
-  alert("Producto anadido al carrito");
+  alert("Producto añadido al carrito.");
 }
 
 function cambiarCantidad(codigo, cuanto) {
   let carrito = obtenerCarrito();
   let nuevo = [];
+  let producto = buscarProducto(codigo);
 
   for (let i = 0; i < carrito.length; i++) {
     if (carrito[i].codigo === codigo) {
-      carrito[i].cantidad = carrito[i].cantidad + cuanto;
+      let cantidadNueva = carrito[i].cantidad + cuanto;
+      if (producto !== null && cantidadNueva > producto.stock) {
+        alert("Solo quedan " + producto.stock + " unidades disponibles.");
+        cantidadNueva = producto.stock;
+      }
+      carrito[i].cantidad = cantidadNueva;
     }
-    if (carrito[i].cantidad > 0) {
+    if (carrito[i].cantidad > 0 && buscarProducto(carrito[i].codigo) !== null) {
       nuevo.push(carrito[i]);
     }
   }
@@ -91,12 +106,23 @@ function pintarCarrito() {
   }
 
   let carrito = obtenerCarrito();
+  let itemsValidos = [];
 
-  if (carrito.length === 0) {
+  for (let i = 0; i < carrito.length; i++) {
+    if (buscarProducto(carrito[i].codigo) !== null && carrito[i].cantidad > 0) {
+      itemsValidos.push(carrito[i]);
+    }
+  }
+
+  if (itemsValidos.length !== carrito.length) {
+    guardarCarrito(itemsValidos);
+  }
+
+  if (itemsValidos.length === 0) {
     caja.innerHTML = `
-      <div class="caja text-center">
-        <h2 class="h5">Tu carrito esta vacio</h2>
-        <p class="ayuda">Todavia no has anadido productos.</p>
+      <div class="caja text-center estado-vacio">
+        <h2 class="h5">Tu carrito está vacío</h2>
+        <p class="ayuda">Todavía no has añadido productos.</p>
         <a class="btn btn-principal mt-2" href="productos.html">Ver productos</a>
       </div>`;
     return;
@@ -105,23 +131,24 @@ function pintarCarrito() {
   let filas = "";
   let total = 0;
 
-  for (let i = 0; i < carrito.length; i++) {
-
-    let p = buscarProducto(carrito[i].codigo);
-    let subtotal = p.precio * carrito[i].cantidad;
+  for (let i = 0; i < itemsValidos.length; i++) {
+    let p = buscarProducto(itemsValidos[i].codigo);
+    let subtotal = p.precio * itemsValidos[i].cantidad;
     total = total + subtotal;
 
     filas = filas + `
       <tr>
         <td>
-          <img src="${p.imagen}" alt="${p.nombre}" width="56" class="me-2">
-          ${p.nombre}
+          <div class="producto-carrito">
+            <img src="${p.imagen}" alt="${p.nombre}" width="64">
+            <span>${p.nombre}</span>
+          </div>
         </td>
         <td>${precioBonito(p.precio)}</td>
         <td>
-          <button class="btn-mini" onclick="cambiarCantidad('${p.codigo}', -1)">-</button>
-          <strong class="mx-2">${carrito[i].cantidad}</strong>
-          <button class="btn-mini" onclick="cambiarCantidad('${p.codigo}', 1)">+</button>
+          <button class="btn-mini" onclick="cambiarCantidad('${p.codigo}', -1)" aria-label="Restar una unidad">−</button>
+          <strong class="mx-2">${itemsValidos[i].cantidad}</strong>
+          <button class="btn-mini" onclick="cambiarCantidad('${p.codigo}', 1)" aria-label="Sumar una unidad">+</button>
         </td>
         <td><strong>${precioBonito(subtotal)}</strong></td>
         <td>
@@ -129,6 +156,12 @@ function pintarCarrito() {
         </td>
       </tr>`;
   }
+
+  let sesion = typeof obtenerSesion === "function" ? obtenerSesion() : null;
+  let avisoSesion = sesion === null
+    ? `<p class="aviso-sesion">Debes iniciar sesión o registrarte antes de finalizar la compra.</p>`
+    : `<p class="aviso-sesion aviso-sesion-ok">Comprarás como ${sesion.nombre} (${sesion.correo}).</p>`;
+  let textoBoton = sesion === null ? "Iniciar sesión para comprar" : "Finalizar compra";
 
   caja.innerHTML = `
     <div class="caja">
@@ -148,15 +181,66 @@ function pintarCarrito() {
         <h2 class="h4 mb-0">Total: ${precioBonito(total)}</h2>
       </div>
 
-      <button class="btn btn-principal w-100 mt-3" onclick="finalizarCompra()">
-        Finalizar compra
-      </button>
+      ${avisoSesion}
+      <button class="btn btn-principal w-100 mt-2" onclick="finalizarCompra()">${textoBoton}</button>
     </div>`;
 }
 
 function finalizarCompra() {
-  alert("Compra simulada correctamente. Gracias por preferir Patitas Store.");
-  vaciarCarrito();
+  let carrito = obtenerCarrito();
+  if (carrito.length === 0) {
+    return;
+  }
+
+  let sesion = typeof obtenerSesion === "function" ? obtenerSesion() : null;
+  if (sesion === null) {
+    localStorage.setItem("avisoLoginPatitas", "Inicia sesión o crea una cuenta para terminar tu compra.");
+    window.location.href = "login.html?volver=carrito";
+    return;
+  }
+
+  let items = [];
+  let total = 0;
+
+  for (let i = 0; i < carrito.length; i++) {
+    let producto = buscarProducto(carrito[i].codigo);
+    if (producto === null || carrito[i].cantidad > producto.stock) {
+      alert("Revisa las cantidades: uno de los productos ya no tiene stock suficiente.");
+      pintarCarrito();
+      return;
+    }
+
+    items.push({
+      codigo: producto.codigo,
+      nombre: producto.nombre,
+      precio: producto.precio,
+      cantidad: carrito[i].cantidad
+    });
+    total = total + producto.precio * carrito[i].cantidad;
+  }
+
+  for (let i = 0; i < items.length; i++) {
+    let producto = buscarProducto(items[i].codigo);
+    producto.stock = producto.stock - items[i].cantidad;
+  }
+  guardarProductos(productos);
+
+  let ordenes = obtenerOrdenes();
+  let ahora = new Date();
+  ordenes.push({
+    id: "ORD-" + String(ahora.getTime()).slice(-6),
+    fecha: ahora.toISOString(),
+    cliente: sesion.nombre,
+    correo: sesion.correo,
+    estado: "Recibida",
+    total: total,
+    items: items
+  });
+  guardarOrdenes(ordenes);
+
+  guardarCarrito([]);
+  alert("Compra simulada correctamente. Tu orden quedó registrada.");
+  pintarCarrito();
 }
 
 actualizarContador();

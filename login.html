@@ -73,14 +73,14 @@
       <form id="formLogin" novalidate>
 
         <div class="mb-3">
-          <label class="form-label" for="correo">Correo</label>
-          <input type="email" class="form-control" id="correo" placeholder="tucorreo@gmail.com">
+          <label class="form-label" for="correo">Correo *</label>
+          <input type="email" class="form-control" id="correo" placeholder="tucorreo@gmail.com" maxlength="100">
           <span class="error" id="errorCorreo"></span>
         </div>
 
         <div class="mb-4">
-          <label class="form-label" for="password">Contrasena</label>
-          <input type="password" class="form-control" id="password">
+          <label class="form-label" for="password">Contraseña *</label>
+          <input type="password" class="form-control" id="password" maxlength="10">
           <span class="ayuda">Entre 4 y 10 caracteres, con letras, numeros y un simbolo</span>
           <span class="error" id="errorPassword"></span>
         </div>
@@ -88,10 +88,17 @@
         <button type="submit" class="btn btn-principal w-100">Ingresar</button>
 
         <p class="text-center mt-3 ayuda">
-          No tienes cuenta? <a href="registro.html">Registrate aqui</a>
+          ¿No tienes cuenta? <a href="registro.html" id="enlaceRegistro">Regístrate aquí</a>
         </p>
 
       </form>
+
+      <div class="credenciales-demo">
+        <strong>Cuentas para probar los roles</strong>
+        <span>Administrador: admin@duoc.cl / Admin1!</span>
+        <span>Vendedor: vendedor@duoc.cl / Venta1!</span>
+        <span>Cliente: cliente@gmail.com / Cliente1!</span>
+      </div>
     </div>
   </section>
 </main>
@@ -136,6 +143,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<script src="js/sesion.js"></script>
 <script src="js/productos.js"></script>
 <script src="js/catalogo.js"></script>
 <script src="js/carrito.js"></script>
