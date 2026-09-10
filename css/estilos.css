@@ -1,28 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
 
 :root {
-  --verde:        #2A6F6B;   
-  --verde-oscuro: #1E514E;   
-  --naranjo:      #E8853A;   
-  --crema:        #FAF7F2;   
+  --verde:        #176B5B;
+  --verde-oscuro: #0E4F45;
+  --naranjo:      #F08A4B;
+  --crema:        #F4F7F5;
   --blanco:       #FFFFFF;   
   --texto:        #2B3138;   
   --gris:         #6B7280;   
-  --borde:        #E5E2DC;   
+  --borde:        #DDE6E2;
   --rojo:         #C0392B;   
   --verde-ok:     #1E7A4D;   
 
   --fuente-titulos: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
   --fuente-texto:   'Nunito', 'Segoe UI', Arial, sans-serif;
 
-  --radio: 12px;                              
-  --sombra: 0 2px 10px rgba(43, 49, 56, 0.08);
+  --radio: 16px;
+  --sombra: 0 8px 24px rgba(28, 55, 49, 0.08);
 }
 
 body {
   font-family: var(--fuente-texto);
   background-color: var(--crema);
   color: var(--texto);
+  font-size: 16px;
+  line-height: 1.55;
 }
 
 h1, h2, h3 {
@@ -56,6 +58,10 @@ main {
   border-bottom: 1px solid var(--borde);
   padding-top: 12px;
   padding-bottom: 12px;
+  box-shadow: 0 3px 18px rgba(28, 55, 49, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .tienda-navbar .navbar-brand {
@@ -93,6 +99,13 @@ main {
 .btn-link-suave {
   color: var(--texto);
   font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-cerrar-sesion {
+  color: var(--rojo);
+  font-weight: 700;
+  padding: 7px 9px;
 }
 
 .btn-carrito {
@@ -145,7 +158,7 @@ main {
 }
 
 .hero {
-  background-color: var(--verde);
+  background: linear-gradient(125deg, var(--verde-oscuro), var(--verde));
   color: var(--blanco);
   padding: 60px 0;
 }
@@ -171,8 +184,12 @@ main {
 }
 
 .hero img {
-  max-width: 100%;
-  border-radius: var(--radio);
+  width: 100%;
+  height: 390px;
+  object-fit: cover;
+  border-radius: 22px;
+  border: 5px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
 }
 
 .card-producto {
@@ -195,8 +212,11 @@ main {
 
 .card-producto img {
   width: 100%;
-  border-radius: 8px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
   margin-bottom: 12px;
+  background-color: #EEF3F1;
 }
 
 .card-producto .categoria {
@@ -220,10 +240,28 @@ main {
   margin-bottom: 12px;
 }
 
+.stock-producto {
+  color: var(--gris);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.precio {
+  color: var(--naranjo);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
 .card-producto .acciones {
   margin-top: auto;
   display: flex;
   gap: 8px;
+}
+
+.card-producto .acciones .btn {
+  flex: 1;
+  padding-left: 13px;
+  padding-right: 13px;
 }
 
 .filtros {
@@ -284,6 +322,10 @@ main {
   box-shadow: 0 0 0 3px rgba(42, 111, 107, 0.15);
 }
 
+.form-control:hover, .form-select:hover {
+  border-color: #B8CBC4;
+}
+
 .error {
   display: block;
   color: var(--rojo);
@@ -309,6 +351,70 @@ main {
   margin-bottom: 16px;
 }
 
+.texto-opcional {
+  color: var(--gris);
+  font-weight: 600;
+}
+
+.credenciales-demo {
+  display: grid;
+  gap: 4px;
+  margin-top: 22px;
+  padding: 14px 16px;
+  border: 1px dashed #B8CBC4;
+  border-radius: 10px;
+  background-color: #F7FAF9;
+  color: var(--gris);
+  font-size: 0.82rem;
+}
+
+.credenciales-demo strong {
+  color: var(--texto);
+  margin-bottom: 3px;
+}
+
+.aviso-sesion {
+  margin: 18px 0 4px;
+  padding: 11px 14px;
+  border-left: 4px solid var(--naranjo);
+  border-radius: 8px;
+  background-color: #FFF4EC;
+  color: #81441E;
+  font-weight: 700;
+}
+
+.aviso-sesion-ok {
+  border-left-color: var(--verde);
+  background-color: #EAF6F2;
+  color: var(--verde-oscuro);
+}
+
+.producto-carrito {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 250px;
+}
+
+.producto-carrito img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.estado-vacio {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.detalle-imagen {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: var(--radio);
+}
+
 .tabla-simple {
   width: 100%;
   background-color: var(--blanco);
@@ -316,7 +422,7 @@ main {
 }
 
 .tabla-simple th {
-  background-color: #F0EDE7;
+  background-color: #EEF4F1;
   color: var(--gris);
   font-size: 0.78rem;
   text-transform: uppercase;
@@ -329,6 +435,10 @@ main {
   padding: 12px;
   border-bottom: 1px solid var(--borde);
   vertical-align: middle;
+}
+
+.tabla-simple tbody tr:hover {
+  background-color: #F8FBFA;
 }
 
 .btn-mini {
@@ -393,7 +503,7 @@ main {
 }
 
 .tienda-footer {
-  background-color: var(--texto);
+  background-color: #1F2F2C;
   color: #D8DCE0;
   padding: 40px 0 22px 0;
 }
@@ -441,6 +551,12 @@ main {
   animation: aparecer 0.5s ease-out;
 }
 
+button:focus-visible, a:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 3px solid rgba(240, 138, 75, 0.55);
+  outline-offset: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animado { animation: none; }
   .card-producto:hover, .card-blog:hover { transform: none; }
@@ -457,9 +573,17 @@ main {
     font-size: 1.9rem;
   }
 
+  .hero img {
+    height: 260px;
+  }
+
   .tienda-acciones {
     margin-left: 0;
     margin-top: 12px;
+  }
+
+  .card-producto img {
+    height: 210px;
   }
 
   .caja {

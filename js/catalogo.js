@@ -14,16 +14,22 @@ function buscarProducto(codigo) {
 }
 
 function tarjetaProducto(p) {
+  let textoStock = p.stock > 0 ? "Stock: " + p.stock : "Agotado";
+  let botonCarrito = p.stock > 0
+    ? `<button class="btn btn-principal" onclick="agregarAlCarrito('${p.codigo}')">Añadir</button>`
+    : `<button class="btn btn-principal" disabled>Agotado</button>`;
+
   return `
-    <div class="col-md-4 mb-4">
+    <div class="col-sm-6 col-lg-4 mb-4">
       <div class="card-producto">
-        <img src="${p.imagen}" alt="${p.nombre}">
+        <img src="${p.imagen}" alt="${p.nombre}" loading="lazy">
         <span class="categoria">${p.categoria} &middot; ${p.mascota}</span>
         <h3>${p.nombre}</h3>
+        <span class="stock-producto">${textoStock}</span>
         <p class="precio">${precioBonito(p.precio)}</p>
         <div class="acciones">
           <button class="btn btn-secundario" onclick="verDetalle('${p.codigo}')">Ver</button>
-          <button class="btn btn-principal" onclick="agregarAlCarrito('${p.codigo}')">Anadir</button>
+          ${botonCarrito}
         </div>
       </div>
     </div>`;
@@ -116,19 +122,19 @@ function pintarDetalle() {
   caja.innerHTML = `
     <div class="row">
       <div class="col-md-5 mb-3">
-        <img src="${p.imagen}" alt="${p.nombre}" class="img-fluid">
+        <img src="${p.imagen}" alt="${p.nombre}" class="img-fluid detalle-imagen">
       </div>
       <div class="col-md-7">
         <span class="categoria">${p.categoria} &middot; Para ${p.mascota}</span>
         <h1>${p.nombre}</h1>
         <p class="precio">${precioBonito(p.precio)}</p>
         <p>${p.descripcion}</p>
-        <h2 class="h6 mt-4">Caracteristicas</h2>
+        <h2 class="h6 mt-4">Características</h2>
         <ul>${listaCaracteristicas}</ul>
         <p class="ayuda">Codigo: ${p.codigo} &middot; Stock disponible: ${p.stock}</p>
-        <button class="btn btn-principal mt-2" onclick="agregarAlCarrito('${p.codigo}')">
-          Anadir al carrito
-        </button>
+        ${p.stock > 0
+          ? `<button class="btn btn-principal mt-2" onclick="agregarAlCarrito('${p.codigo}')">Añadir al carrito</button>`
+          : `<button class="btn btn-principal mt-2" disabled>Producto agotado</button>`}
         <a class="btn btn-secundario mt-2" href="productos.html">Volver</a>
       </div>
     </div>`;

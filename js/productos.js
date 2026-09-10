@@ -1,5 +1,5 @@
 
-let productos = [
+let productosBase = [
 
   {
     codigo: "AL-001",
@@ -9,7 +9,7 @@ let productos = [
     precio: 42990,
     stock: 24,
     stockCritico: 5,
-    imagen: "img/productos/al-001.svg",
+    imagen: "img/productos/al-001.jpg",
     descripcion: "Alimento completo y balanceado para perros adultos de raza grande. Con proteina de pollo como primer ingrediente y condroitina para el cuidado de las articulaciones.",
     caracteristicas: ["Peso: 15 kg", "Sabor: pollo y arroz", "Etapa: adulto", "Tamanio: raza grande"]
   },
@@ -22,7 +22,7 @@ let productos = [
     precio: 18490,
     stock: 3,
     stockCritico: 5,
-    imagen: "img/productos/al-002.svg",
+    imagen: "img/productos/al-002.jpg",
     descripcion: "Formulado para gatos esterilizados, con menos grasa para ayudar a controlar el peso y fibra que reduce la formacion de bolas de pelo.",
     caracteristicas: ["Peso: 3 kg", "Sabor: salmon", "Etapa: adulto", "Especial: control de peso"]
   },
@@ -35,7 +35,7 @@ let productos = [
     precio: 5990,
     stock: 40,
     stockCritico: 8,
-    imagen: "img/productos/ju-001.svg",
+    imagen: "img/productos/ju-001.jpg",
     descripcion: "Pelota de caucho natural resistente a la mordida. Rebota de forma irregular, lo que mantiene al perro entretenido por mas tiempo. Flota en el agua.",
     caracteristicas: ["Talla: M (7 cm)", "Material: caucho natural", "Uso: interior y exterior", "Lavable: si"]
   },
@@ -48,7 +48,7 @@ let productos = [
     precio: 29990,
     stock: 12,
     stockCritico: 4,
-    imagen: "img/productos/ju-002.svg",
+    imagen: "img/productos/ju-002.jpg",
     descripcion: "Torre rascadora de tres niveles forrada en sisal natural, con una plataforma superior para dormir. Base ancha que evita que se vuelque.",
     caracteristicas: ["Altura: 60 cm", "Material: sisal y felpa", "Niveles: 3", "Armado: incluye herramienta"]
   },
@@ -61,7 +61,7 @@ let productos = [
     precio: 9990,
     stock: 30,
     stockCritico: 6,
-    imagen: "img/productos/ac-001.svg",
+    imagen: "img/productos/ac-001.jpg",
     descripcion: "Set de collar regulable y correa de 1,2 metros en nylon reforzado, con costuras dobles y broche metalico. Incluye una banda reflectante para pasear de noche.",
     caracteristicas: ["Talla: M (30 a 45 cm)", "Material: nylon reforzado", "Largo correa: 1,2 m", "Reflectante: si"]
   },
@@ -74,11 +74,38 @@ let productos = [
     precio: 24990,
     stock: 2,
     stockCritico: 4,
-    imagen: "img/productos/ac-002.svg",
+    imagen: "img/productos/ac-002.jpg",
     descripcion: "Cama con borde acolchado que sirve de apoyo para la cabeza y base antideslizante. La funda se saca con cierre y se puede lavar en lavadora.",
     caracteristicas: ["Talla: L (90 x 70 cm)", "Relleno: fibra siliconada", "Funda: desmontable", "Lavable: en lavadora"]
   }
 
 ];
 
-let categorias = ["Todos", "Alimento", "Juguetes", "Accesorios"];
+function cargarProductos() {
+  let guardados = localStorage.getItem("productosPatitas");
+
+  if (guardados === null) {
+    localStorage.setItem("productosPatitas", JSON.stringify(productosBase));
+    return productosBase.slice();
+  }
+
+  try {
+    let lista = JSON.parse(guardados);
+    return Array.isArray(lista) ? lista : productosBase.slice();
+  } catch (error) {
+    return productosBase.slice();
+  }
+}
+
+function guardarProductos(productosActualizados) {
+  localStorage.setItem("productosPatitas", JSON.stringify(productosActualizados));
+}
+
+let productos = cargarProductos();
+let categorias = ["Todos"];
+
+for (let i = 0; i < productos.length; i++) {
+  if (categorias.indexOf(productos[i].categoria) === -1) {
+    categorias.push(productos[i].categoria);
+  }
+}

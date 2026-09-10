@@ -8,7 +8,7 @@
 .admin-menu {
   width: 240px;
   flex-shrink: 0;              
-  background-color: var(--texto);
+  background-color: #173A34;
   color: #D8DCE0;
   padding: 24px 0;
 }
@@ -85,6 +85,7 @@
   border: 1px solid var(--borde);
   border-radius: var(--radio);
   padding: 18px 20px;
+  box-shadow: var(--sombra);
 }
 
 .admin-resumen .dato .numero {
@@ -121,6 +122,43 @@
   background-color: #FFF7F6;
 }
 
+.aviso-stock {
+  min-height: 24px;
+  margin: -6px 0 12px;
+  color: var(--rojo);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.acciones-tabla {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.etiqueta-rol {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background-color: #EAF6F2;
+  color: var(--verde-oscuro);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.orden-encabezado {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #EEF4F1;
+}
+
+.orden-encabezado > div {
+  display: grid;
+}
+
 @media (max-width: 768px) {
 
   .admin-layout {
@@ -153,6 +191,10 @@
 
   .admin-contenido {
     padding: 20px;
+  }
+
+  .orden-encabezado {
+    grid-template-columns: 1fr;
   }
 }
 
